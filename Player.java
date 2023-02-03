@@ -1,0 +1,29 @@
+package oopIntro;
+
+import java.util.Scanner;
+
+public class Player {
+	private String name;
+	private String playerNumber;
+	private static Scanner scanner = new Scanner(System.in);
+	
+	public Player(String name, String playerNumber) {
+		this.name=name;
+		this.playerNumber=playerNumber;
+	}
+	public String getName() {
+		return name;
+	}
+	
+	public String getNumber() {
+		return playerNumber;
+	}
+	public int makeMove() {
+		System.out.println("What column do you want to place your token");
+		int column=Integer.parseInt(scanner.nextLine());
+		return column;
+	}
+	public String toString() {
+		return "Player "+playerNumber+" is "+name;
+	}
+}
