@@ -31,6 +31,11 @@ public class Board {
 		this.board=board;
 		
 	}
+	//method to get the board
+	public String[][] getBoard() throws Exception{
+		boardSetUp();
+		return this.board;
+	}
 	public void printBoard() {
 		//loop through the 2D array and print values at each index
 		for(int i=0; i<board.length; i++) {
@@ -73,17 +78,6 @@ public class Board {
 		return isFull;
 	}
 	public void addToken(int colToAdd, String playerName) throws Exception {
-		//check for invalid moves
-		//check to see if column exists on the board
-		//if the colToAdd is greater than number of columns or is zero or negative
-		if(colToAdd > board[0].length || colToAdd <=0) {
-			throw new Exception("Error!! Column not found");
-		}
-		
-		//check to see if the column is full already
-		if(columnFull(colToAdd)) { 
-			throw new Exception("Error!! Column full");
-		}
 		
 		/*if the column is valid and not full
 		 *get the index of last row and loop through it until first row
@@ -168,14 +162,26 @@ public class Board {
 			for(int j=column-1; j>=0; j--) {
 				if(board[i][j].equalsIgnoreCase(playerName)) {
 					int counter=0;
+					int col=j;
 					for(int k=i; k>=0; k--) {
-						if(board[k][k].equalsIgnoreCase(playerName)) {
+						
+						if(col<0) {
+							break;
+						}
+						
+						if(board[k][col].equalsIgnoreCase(playerName)) {
 							counter++;
 						}
+						
+						if(!board[k][col].equalsIgnoreCase(playerName)) {
+							break;
+						}
+						
 						if(counter==4) {
 							check=true;
 							break;
 						}
+						col--;
 					}
 				}
 			}
@@ -200,11 +206,21 @@ public class Board {
 			for(int j=0; j<=col-1; j++) {
 				if(board[i][j].equalsIgnoreCase(playerName)) {
 					int counter=0;
-					int column=0;
+					int column=j;
 					for(int k=i; k>=0; k--) {
+						
+						if(column>col-1) {
+							break;
+						}
+						
 						if(board[k][column].equalsIgnoreCase(playerName)) {
 							counter++;
 						}
+						
+						if(!board[k][column].equalsIgnoreCase(playerName)) {
+							break;;
+						}
+						
 						if(counter==4) {
 							check=true;
 							break;
@@ -215,5 +231,9 @@ public class Board {
 			}
 		}
 		return check;
+	}
+	
+	public boolean checkIfPlayerIsTheWinner(String playerName) {
+		return checkVertical(playerName)||checkHorizontal(playerName) || checkLeftDiagonal(playerName)|| checkRightDiagonal(playerName);
 	}
 }

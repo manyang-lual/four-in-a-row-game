@@ -1,5 +1,6 @@
 package oopIntro;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Player {
@@ -20,7 +21,20 @@ public class Player {
 	}
 	public int makeMove() {
 		System.out.println("What column do you want to place your token");
-		int column=Integer.parseInt(scanner.nextLine());
+		int column=0;
+		
+		try
+	    { 
+	      column   = scanner.nextInt();      
+	      System.out.println("The column is "+column );
+	    } 
+
+	    catch ( InputMismatchException ex )
+	    { 
+	      System.out.println("You entered bad data." );
+	      System.out.println("Run the program again." );
+	    } 
+		
 		return column;
 	}
 	public String toString() {
