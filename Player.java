@@ -26,7 +26,7 @@ public class Player {
 		try
 	    { 
 	      column   = scanner.nextInt();      
-	      System.out.println("The column is "+column );
+	      System.out.println(this.name + " is making a move on column "+column );
 	    } 
 
 	    catch ( InputMismatchException ex )

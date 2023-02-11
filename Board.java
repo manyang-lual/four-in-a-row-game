@@ -5,41 +5,64 @@ public class Board {
 	private String[][] board;
 	private Scanner scanner = new Scanner(System.in);
 	
-	public void boardSetUp() throws Exception {
+	private int numberOfRows;
+	private int numberOfColumns;
+	
+	public Board() {
+		/*Every time you create a new board, you prompt the player to enter 
+		 * the number of rows and columns they want the board to have
+		 * You then create a 2D board with the number of rows and columns given by the player
+		 * You then have to populate theboard with - to ensure it is an empty board
+		 * 
+		 * */
 		//prompt player for the number of rows
 		//store number of rows in row variable
+		//surround the input in a try catch block to make sure it is integer input
 		System.out.println("How many rows: ");
-		int numRows=Integer.parseInt(scanner.nextLine());
+		try {
+			this.numberOfRows=Integer.parseInt(scanner.nextLine());
+		}catch ( Exception ex ){
+		      System.out.println("You did not provide a valid input for the number of rows." );
+		      System.out.println("Run the program again." );
+		} 
 		
 		//prompt player for the number of rows
 		//store number of rows in row variable
 		System.out.println("How many columns: ");
-		int numColumns=Integer.parseInt(scanner.nextLine());
-		
-		if(numRows < 1 || numColumns <1) {
-			throw new Exception("Error! Can't have negative values");
+		try {
+			this.numberOfColumns=Integer.parseInt(scanner.nextLine());
+		}catch ( Exception ex ){
+		      System.out.println("You did not provide a valid input for the number of columns" );
+		      System.out.println("Run the program again." );
+		} 
+		if(this.numberOfRows <1 || this.numberOfColumns < 1) {
+			 System.out.println("You did not provide a valid input for the number of rows/colummns." );
+			 System.out.println("Run the program again." );
+			 System.exit(1);
 		}
-		//create a 2D array of string and loop through it to assign "-" to all the indexes
-		//assign the board variable the new string array created
-		String[][] board= new String[numRows][numColumns];
-		for(int i=0; i<numRows; i++) {
-			for(int j=0; j<numColumns; j++) {
-				board[i][j]="-";
+		//create a 2D board with rows and columns given by the user
+		this.board= new String[numberOfRows][numberOfColumns];
+		
+		//loop through the entire board and populate it with -. This represents an empty board
+		for(int i=0; i<this.numberOfRows; i++) {
+			for(int j=0; j<this.numberOfColumns; j++) {
+				this.board[i][j]="-";
 			}
 		}
-		//the board variable is assigned the new 2D array created
-		this.board=board;
+
 		
 	}
+	
 	//method to get the board
 	public String[][] getBoard() throws Exception{
-		boardSetUp();
 		return this.board;
 	}
-	public void printBoard() {
+	
+	public void printBoard() throws Exception {
+		
 		//loop through the 2D array and print values at each index
-		for(int i=0; i<board.length; i++) {
-			for(int j=0; j<board[i].length; j++) {
+		for(int i=0; i<this.board.length; i++) {
+			for(int j=0; j<this.board[i].length; j++) {
 				System.out.print(board[i][j]+" ");
 			}
 			System.out.println();
@@ -50,6 +73,7 @@ public class Board {
 		/*if the first row at a given column is not "-", that means that entire column has been 
 		 assigned values and it is not empty
 		*/
+		String[][] board = this.getBoard();
 		boolean isFull=true;
 		int numColumns= board[0].length;
 		
@@ -66,8 +90,9 @@ public class Board {
 		}
 		return isFull;
 	}
-	public boolean boardFull() {
+	public boolean boardFull() throws Exception {
 		/* Check to see if every column of first row is full */
+		String[][] board = this.getBoard();
 		boolean isFull=true;
 		for(int i=0; i<board[0].length; i++) {
 			if(board[0][i] == "-") {
@@ -84,17 +109,20 @@ public class Board {
 		 *insert the data at the first empty space you find 
 		 * 
 		 */
-		int lastRow=board.length-1;
+		
+		int lastRow=this.getBoard().length-1;
+		
 		while(lastRow >=0) {
-			if(board[lastRow][(colToAdd-1)]=="-") {
-				board[lastRow][(colToAdd-1)]=playerName;
+			if(this.getBoard()[lastRow][(colToAdd-1)].equals("-")) {
+				this.getBoard()[lastRow][(colToAdd-1)] = playerName;
 				break;
 			}
 			lastRow--;
 		}
 	}
 	
-	public boolean checkVertical(String playerName) {
+	public boolean checkVertical(String playerName) throws Exception {
+		String[][] board = this.getBoard();
 		boolean check = false;
 		int lastRow=board.length-1;
 		for(int i=lastRow; i>=0; i--) {
@@ -116,7 +144,8 @@ public class Board {
 		
 		return check;
 	}
-	public boolean checkHorizontal(String playerName) {
+	public boolean checkHorizontal(String playerName) throws Exception {
+		String[][] board = this.getBoard();
 		boolean check= false;
 		int rows=board.length-1;
 		int cols=board[0].length-1;
@@ -146,7 +175,8 @@ public class Board {
 		
 		return check;
 	}
-	public boolean checkLeftDiagonal(String playerName) {
+	public boolean checkLeftDiagonal(String playerName) throws Exception {
+		String[][] board = this.getBoard();
 		boolean check =false;
 		/*Loop through the board starting at the last row and last column
 		 * if the name at the current row and column equals the playerName, 
@@ -189,7 +219,8 @@ public class Board {
 		
 		return check;
 	}
-	public boolean checkRightDiagonal(String playerName) {
+	public boolean checkRightDiagonal(String playerName) throws Exception {
+		String[][] board = this.getBoard();
 		boolean check = false;
 		/*loop through the board starting at last row column 0.
 		 * check if the value at that column equals the playerName, if true
@@ -233,7 +264,7 @@ public class Board {
 		return check;
 	}
 	
-	public boolean checkIfPlayerIsTheWinner(String playerName) {
+	public boolean checkIfPlayerIsTheWinner(String playerName) throws Exception {
 		return checkVertical(playerName)||checkHorizontal(playerName) || checkLeftDiagonal(playerName)|| checkRightDiagonal(playerName);
 	}
 }
